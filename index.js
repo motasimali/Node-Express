@@ -12,30 +12,8 @@ app.use(bodyParser.json());
 
 app.use(express.static(__dirname+'/public'));
 
-//all means no matter which method GET, PUT, POST or DELETE is called
-app.all('/dishes',(req,res,next)=>{
-    res.statusCode = 200;
-    res.setHeader('Content-Type','text/plain');
-    next();
-    // next will call the next function with modified response
-});
-
-app.get('/dishes',(req,res,next)=>{
-    res.end('Will send all the dishes')
-});
-
-app.post('/dishes',(req,res,next)=>{
-    res.end('Will add the dish: '+ req.body.name +' with details: '+ req.body.description);
-});
-
-app.put('/dishes',(req,res,next)=>{
-    res.statusCode = 403;
-    res.end('PUT operation not supported on '+req.url);
-});
-
-app.delete('/dishes',(req,res,next)=>{
-    res.end('Delteting all the dishes');
-});
+const dishRouter = require('./routes/dishRouter');
+app.use('/dishes',dishRouter);
 
 app.get('/dishes/:dishId',(req,res,next)=>{
     res.end('Will send details of the dish: '+ req.params.dishId+ ' to you');
